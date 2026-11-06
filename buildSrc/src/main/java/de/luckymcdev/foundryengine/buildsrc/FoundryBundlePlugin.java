@@ -27,11 +27,12 @@ public class FoundryBundlePlugin implements Plugin<Project> {
 
         // Written by the IntelliJ plugin (FoundryEngine tool window).
         FoundryLocalConfig local = FoundryLocalConfig.read(project);
-        if (local.bundlesDir() != null) {
-            deploy.setBundlesDir(local.bundlesDir());
+        if (local.foundryDir() != null) {
+            deploy.setBundlesDir(new File(local.foundryDir(), "bundles").getAbsolutePath());
         }
 
         registerModsDependency(project, local);
+        registerLibrariesDependency(project, local);
         registerBundleTasks(project, metadata);
     }
 
@@ -112,6 +113,26 @@ public class FoundryBundlePlugin implements Plugin<Project> {
             }
         });
         project.getDependencies().add("implementation", modJars);
+    }
+
+    private void registerLibrariesDependency(Project project, FoundryLocalConfig local) {
+        if (local.foundryDir() == null || local.libraryJars() == null || local.libraryJars().isEmpty()) {
+            return;
+        }
+
+        File libraryCacheDir = new File(local.foundryDir(), ".cache/libraries");
+        if (!libraryCacheDir.isDirectory()) {
+            return;
+        }
+
+        for (String relativePath : local.libraryJars()) {
+            File jarFile = new File(libraryCacheDir, relativePath);
+            if (jarFile.isFile()) {
+                project.getDependencies().add("compileOnly", project.files(jarFile));
+            } else {
+                project.getLogger().warn("Library jar not found in cache: {}", jarFile);
+            }
+        }
     }
 
     private void registerBundleTasks(Project project, BundleMetadata metadata) {
