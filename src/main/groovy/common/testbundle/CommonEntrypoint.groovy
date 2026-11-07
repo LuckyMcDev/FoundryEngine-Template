@@ -3,6 +3,7 @@ package common.testbundle
 import com.azure.json.models.JsonBoolean
 import com.google.gson.JsonObject
 import de.luckymcdev.foundryengine.Common
+import de.luckymcdev.foundryengine.EnginePaths
 import de.luckymcdev.foundryengine.builder.common.block.BlockBuilder
 import de.luckymcdev.foundryengine.builder.common.item.ItemBuilder
 import de.luckymcdev.foundryengine.builder.common.menu.MenuBuilder
@@ -154,11 +155,11 @@ class CommonEntrypoint implements BundleEntrypoint {
 
 		Common.LOGGER.error("Test Load Server")
 
-		var test = Common.GAMEDIR.resolve("test.json").toAbsolutePath()
+		var test = EnginePaths.GAMEDIR.resolve("test.json").toAbsolutePath()
 
 		JsonIO.write(new JsonObject(), test)
 
-		Files.copy(test, Common.GAMEDIR.resolve("test2.json5"))
+		Files.copy(test, EnginePaths.GAMEDIR.resolve("test2.json5"))
 
 		/*
 		PlayerEvents.tick {
