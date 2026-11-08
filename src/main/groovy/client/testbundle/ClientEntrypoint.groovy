@@ -1,12 +1,14 @@
 package client.testbundle
 
 import common.testbundle.BlockEntityDemoEntrypoint
+import common.testbundle.CommonEntrypoint
 import de.luckymcdev.foundryengine.Common
 import de.luckymcdev.foundryengine.event.common.BundleEvents
 import de.luckymcdev.foundryengine.event.common.ClientEvents
 import de.luckymcdev.foundryengine.render.client.blockentity.EngineBlockEntityRenderers
 import de.luckymcdev.foundryengine.script.common.BundleEntrypoint
 import net.minecraft.client.Minecraft
+import net.minecraft.world.item.ItemStack
 
 class ClientEntrypoint implements BundleEntrypoint {
 
@@ -22,14 +24,14 @@ class ClientEntrypoint implements BundleEntrypoint {
 		}
 
 		ClientEvents.renderGui {
-			//it.guiGraphics.fakeItem(new ItemStack(CommonEntrypoint.THIS_IS_A_ITEM.get()), 100, 200)
+			it.guiGraphics.fakeItem(new ItemStack(CommonEntrypoint.THIS_IS_A_ITEM.get()), 100, 200)
 		}
 
 		BundleEvents.registry {
 			BlockEntityDemoEntrypoint.COUNTER_BE.renderer(EngineBlockEntityRenderers.noop())
 		}
 
-		Common.LOGGER.error("Test Load Server")
+		Common.LOGGER.error("Test Load Client")
 	}
 
 	@Override

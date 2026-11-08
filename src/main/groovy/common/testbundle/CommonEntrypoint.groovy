@@ -36,7 +36,7 @@ class CommonEntrypoint implements BundleEntrypoint {
 
 	public static final String BUNDLEID = "testbundle"
 
-	private static final ItemBuilder THIS_IS_A_ITEM = ItemBuilder.create(id("this_is_a_item"))
+	public static final ItemBuilder THIS_IS_A_ITEM = ItemBuilder.create(id("this_is_a_item"))
 			.fireResistant()
 			.component(DataComponents.RARITY, Rarity.RARE)
 			.stacksTo(67)
@@ -70,9 +70,9 @@ class CommonEntrypoint implements BundleEntrypoint {
 	private static final BlockBuilder MY_BLOCK = BlockBuilder.create(id("my_block"))
 			.properties(p -> p.strength(2.0f, 3.0f))
 			.itemProperties(p -> p.rarity(Rarity.COMMON))
-			.use {
-				println("test")
-			}
+			.use((state, level, pos,player, hitResult) -> {
+				println("Right Clicked block")
+			})
 
 	private static final BlockBuilder GHOST_BLOCK = BlockBuilder.create(id("ghost_block"))
 			.properties(p -> p.strength(-1.0f, 3600000.0f).noCollision())
@@ -149,17 +149,15 @@ class CommonEntrypoint implements BundleEntrypoint {
 			it.tags(MY_TAG)
 		}
 
-		System.getLogger("common-entrypoint-test").println("Common Entrypoint Test") // doesnt print, but also doesnt crash :D
-
 		Utils.hello("World")
 
-		Common.LOGGER.error("Test Load Server")
+		Common.LOGGER.error("Test Load Common")
 
-		var test = EnginePaths.GAMEDIR.resolve("test.json").toAbsolutePath()
+		///var test = EnginePaths.GAMEDIR.resolve("test.json").toAbsolutePath()
 
-		JsonIO.write(new JsonObject(), test)
+		///JsonIO.write(new JsonObject(), test)
 
-		Files.copy(test, EnginePaths.GAMEDIR.resolve("test2.json5"))
+		///Files.copy(test, EnginePaths.GAMEDIR.resolve("test2.json5"))
 
 		/*
 		PlayerEvents.tick {
